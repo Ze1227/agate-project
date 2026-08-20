@@ -1,0 +1,527 @@
+:root {
+  /* 克制的东方美学 · 轻奢极简 */
+  /* 底色：米白 / 浅暖灰，大面积留白 */
+  --bg: #f6f4ef;          /* 米白 */
+  --bg-warm: #ece9e3;     /* 浅暖灰 */
+  --bg-soft: #f0ece4;     /* 卡片/分区底色 */
+  /* 强调色：深棕 / 墨黑，文字与按钮 */
+  --ink: #2c2722;         /* 墨黑（偏暖） */
+  --ink-soft: #6b635a;    /* 次级文字 */
+  --brown: #4a3b30;       /* 深棕，按钮/强调 */
+  /* 辅助色：低饱和玛瑙系，点缀与系列区分 */
+  --blue: #7c8a93;        /* 烟灰蓝 · 蓝玛瑙 */
+  --red: #a8675f;         /* 豆沙红 · 红玛瑙 */
+  --green: #7e8b6f;       /* 苔绿 · 水草玛瑙 */
+  --accent: var(--brown); /* 默认强调用深棕 */
+  --line: #ddd6cb;        /* 细线 */
+  --radius: 4px;          /* 极小圆角，更显克制 */
+  --max-w: 720px;
+  --space: clamp(64px, 14vw, 120px);
+
+  /* 渐变背景：从上到下的极浅暖调 */
+  /* 通用款：暖米白 → 浅燕麦，适配红玛瑙/水草玛瑙等多数品类 */
+  --grad-top: #f8f5f0;
+  --grad-bottom: #f1ede6;
+  /* 蓝玛瑙款：冷调米白 → 极浅灰蓝 */
+  --grad-blue-top: #f5f7f9;
+  --grad-blue-bottom: #eef2f6;
+  /* 紫玛瑙款：极淡紫调 */
+  --grad-purple-top: #f7f5f8;
+  --grad-purple-bottom: #f0eef5;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Songti SC", "STSong", "SimSun", "Noto Serif SC", Georgia, serif;
+  /* 通用款：暖米白 → 浅燕麦，从上到下的极浅渐变 */
+  background: linear-gradient(180deg, var(--grad-top) 0%, var(--grad-bottom) 100%);
+  background-attachment: fixed;
+  color: var(--ink);
+  line-height: 1.9;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 蓝玛瑙款渐变（用于蓝玛瑙系列板块） */
+.block--blue {
+  background: linear-gradient(180deg, var(--grad-blue-top) 0%, var(--grad-blue-bottom) 100%);
+}
+
+/* 紫玛瑙款渐变（预留，给紫玛瑙系列使用） */
+.block--purple {
+  background: linear-gradient(180deg, var(--grad-purple-top) 0%, var(--grad-purple-bottom) 100%);
+}
+
+/* 整页蓝玛瑙背景（用于首页，与文化板块一致） */
+body.page-blue {
+  background: linear-gradient(180deg, var(--grad-blue-top) 0%, var(--grad-blue-bottom) 100%);
+  background-attachment: fixed;
+}
+
+/* 极细天然肌理：宣纸/石材感，透明度 5%-10%，柔光混合。
+   程序化生成，无需外部图片，便于部署。仅在首屏与标题区叠加，
+   正文故事区域保持纯底，保证可读性。 */
+.texture {
+  position: relative;
+}
+
+.texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.08;                       /* 8%，落在 5%-10% 区间 */
+  mix-blend-mode: soft-light;          /* 柔光 */
+  background-image:
+    repeating-linear-gradient(0deg, rgba(80, 70, 60, 0.5) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(80, 70, 60, 0.5) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(45deg, rgba(90, 80, 70, 0.35) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(-45deg, rgba(90, 80, 70, 0.35) 0 1px, transparent 1px 9px);
+  background-size: 3px 3px, 3px 3px, 7px 7px, 9px 9px;
+}
+
+/* 让内容浮在纹理之上 */
+.texture > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* 顶部导航 */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px clamp(20px, 6vw, 40px);
+  background: rgba(246, 244, 239, 0.82);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+
+.nav {
+  display: flex;
+  gap: clamp(14px, 4vw, 28px);
+}
+
+.nav a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 0.92rem;
+  letter-spacing: 0.08em;
+  transition: color 0.25s;
+}
+
+.nav a:hover {
+  color: var(--brown);
+}
+
+/* 子页面导航：系列名称标签在链接上方 */
+.nav--series {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.nav-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--ink-soft);
+  opacity: 0.8;
+}
+
+.nav-links {
+  display: flex;
+  gap: clamp(14px, 4vw, 28px);
+}
+
+/* 封面 */
+.cover {
+  min-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--space) clamp(20px, 6vw, 40px);
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+
+/* 封面独立品牌展示区 */
+/* 封面独立品牌展示区 */
+.brand-showcase {
+  width: 100%;
+  max-width: 180px; /* 原 240px 缩小 1/4 */
+  margin-bottom: 40px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand-showcase img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 主标题：每一块玛瑙都有它的故事 */
+.eyebrow {
+  font-size: clamp(2rem, 9vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+/* 辅助英文：与主标题拉开字号差，行距宽松 */
+.eyebrow-en {
+  font-size: 0.92rem;
+  letter-spacing: 0.16em;
+  line-height: 1.9;
+  color: var(--brown);
+  margin-bottom: 30px;
+}
+
+.cover-title {
+  font-size: clamp(2.4rem, 11vw, 4rem);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.04em;
+  margin-top: 18px;
+  margin-bottom: 22px;
+}
+
+.cover-sub {
+  font-size: clamp(1rem, 3.6vw, 1.15rem);
+  line-height: 1.85;
+  color: var(--ink-soft);
+  max-width: 32ch;
+  margin-bottom: 36px;
+}
+
+/* 首页三个导航键 */
+.home-nav {
+  display: flex;
+  gap: clamp(12px, 4vw, 24px);
+  margin-bottom: 44px;
+  flex-wrap: wrap;
+}
+
+.home-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 96px;
+  padding: 16px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--ink);
+  text-decoration: none;
+  transition: border-color 0.25s, background 0.25s, transform 0.2s;
+}
+
+.home-nav-item:hover {
+  border-color: var(--brown);
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateY(-3px);
+}
+
+.home-nav-cn {
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+}
+
+.home-nav-en {
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brown);
+  opacity: 0.85;
+}
+
+/* 下滑引导：箭头 + 文案 */
+.scroll-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--brown);
+  text-decoration: none;
+  margin-top: 8px;
+  animation: float 2.4s ease-in-out infinite;
+}
+
+.scroll-hint-text {
+  font-size: 0.92rem;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+
+.scroll-hint-arrow {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* 内容板块 */
+.block {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: var(--space) clamp(20px, 6vw, 40px);
+  border-top: 1px solid var(--line);
+}
+
+.section-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  color: var(--brown);
+  margin-bottom: 18px;
+}
+
+/* 系列辅助色：用低饱和玛瑙色区分板块，仅作点缀 */
+.block:nth-of-type(1) .section-label { color: var(--blue); }  /* 文化 · 蓝玛瑙 */
+.block:nth-of-type(2) .section-label { color: var(--red); }   /* 故事 · 红玛瑙 */
+.block:nth-of-type(3) .section-label { color: var(--green); } /* 理念 · 水草玛瑙 */
+
+.section-title {
+  font-size: clamp(1.6rem, 7vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 22px;
+}
+
+.section-text {
+  font-size: clamp(1rem, 3.6vw, 1.1rem);
+  color: var(--ink-soft);
+  margin-bottom: 36px;
+}
+
+/* 配图占位（保留给其他板块使用） */
+.placeholder-card {
+  aspect-ratio: 4 / 3;
+  background:
+    repeating-linear-gradient(45deg, var(--bg-soft) 0 12px, var(--bg-warm) 12px 24px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+}
+
+/* 产品样式图网格（子页面第二屏） */
+.product-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 5vw, 24px);
+  margin-top: 4px;
+}
+
+.product-card {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background:
+    repeating-linear-gradient(45deg, var(--bg-soft) 0 12px, var(--bg-warm) 12px 24px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: flex-end;
+  padding: 12px 14px;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  overflow: hidden;
+  text-decoration: none;
+  transition: border-color 0.25s, transform 0.2s;
+}
+
+.product-card:hover {
+  border-color: var(--brown);
+  transform: translateY(-3px);
+}
+
+.product-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.product-card .product-name {
+  position: relative;
+  z-index: 1;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+}
+
+/* 文化配图：真实玛瑙图片 */
+.culture-image {
+  margin-bottom: 28px;
+}
+
+.culture-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 28px rgba(44, 39, 34, 0.10);
+}
+
+/* 英文折叠按钮：给外国人的英文提示 */
+.en-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: -8px 0 24px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--blue); /* 蓝玛瑙系列色点缀 */
+  border-radius: 999px;
+  color: var(--brown);
+  font-family: "Georgia", "Noto Serif SC", serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.en-toggle:hover {
+  background: var(--blue);
+  color: #fff;
+}
+
+.en-toggle-arrow {
+  transition: transform 0.3s;
+  font-size: 0.8rem;
+}
+
+.en-toggle[aria-expanded="true"] .en-toggle-arrow {
+  transform: rotate(180deg);
+}
+
+/* 英文版文案：默认折叠，展开后显示 */
+.section-en {
+  font-family: "Georgia", "Times New Roman", "Noto Serif SC", serif;
+  font-size: clamp(0.92rem, 3vw, 1.02rem);
+  line-height: 1.75;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  padding-top: 0;
+  margin-top: 0;
+  border-top: 1px solid transparent;
+  transition: max-height 0.5s ease, opacity 0.4s ease, padding 0.4s ease, margin 0.4s ease;
+}
+
+.section-en.open {
+  max-height: 1200px;
+  opacity: 1;
+  margin-top: 4px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+
+.section-en em {
+  font-style: italic;
+  color: var(--brown);
+}
+
+/* 高亮段落：强调句用深棕/墨黑，字重微提 */
+.text-highlight {
+  color: var(--ink) !important;
+  font-weight: 500;
+  margin-top: 18px;
+  padding-left: 14px;
+  border-left: 2px solid var(--brown);
+}
+
+/* 理念列表 */
+.idea-list {
+  list-style: none;
+  margin-top: 8px;
+}
+
+.idea-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+}
+
+.idea-list li span {
+  flex: 0 0 3em;
+  color: var(--brown);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+/* 页脚 */
+.site-footer {
+  text-align: center;
+  padding: var(--space) 20px 56px;
+  border-top: 1px solid var(--line);
+}
+
+.footer-brand {
+  font-size: 1.1rem;
+  letter-spacing: 0.14em;
+  margin-bottom: 12px;
+}
+
+.footer-note {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+
+.footer-copy {
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  opacity: 0.8;
+}
+
+/* 滚动显现动画 */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .scroll-hint { animation: none; }
+}
